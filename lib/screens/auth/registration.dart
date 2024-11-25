@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
 
 import 'package:active_ecommerce_flutter/app_config.dart';
@@ -126,6 +128,11 @@ class _RegistrationState extends State<Registration> {
         password_confirm,
         _register_by,
         googleRecaptchaKey);
+
+    var loginVerify =
+        await AuthRepository().verifyLogin(signupResponse.user!.id.toString());
+    access_token.$ = signupResponse.access_token;
+    access_token.save();
     Loading.close();
 
     if (signupResponse.result == false) {
@@ -137,11 +144,21 @@ class _RegistrationState extends State<Registration> {
       ToastComponent.showDialog(
         message,
       );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return Login();
+          },
+        ),
+        (route) => false,
+      );
     } else {
       ToastComponent.showDialog(
         signupResponse.message,
       );
       AuthHelper().setUserData(signupResponse);
+      AuthHelper().setUservrefiy(loginVerify);
 
       // redirect to main
       // Navigator.pushAndRemoveUntil(context,

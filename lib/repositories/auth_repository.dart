@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:active_ecommerce_flutter/app_config.dart';
 import 'package:active_ecommerce_flutter/data_model/common_response.dart';
 import 'package:active_ecommerce_flutter/data_model/confirm_code_response.dart';
 import 'package:active_ecommerce_flutter/data_model/login_response.dart';
+import 'package:active_ecommerce_flutter/data_model/login_verefication.dart';
 import 'package:active_ecommerce_flutter/data_model/logout_response.dart';
 import 'package:active_ecommerce_flutter/data_model/password_confirm_response.dart';
 import 'package:active_ecommerce_flutter/data_model/password_forget_response.dart';
@@ -12,6 +14,35 @@ import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/repositories/api-request.dart';
 
 class AuthRepository {
+  Future<LoginVerification> verifyLogin(String id) async {
+    // API endpoint
+    String url = "https://meta-bit.io/api/v2/verify";
+    access_token.load();
+    log('Token ${access_token.$.toString()}');
+
+    // Request body
+    var postBody = jsonEncode({
+      "id": id,
+    });
+
+    // Sending the POST request
+    final response = await ApiRequest.post(
+        url: url,
+        headers: {
+          "Accept": "*/*",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${access_token.$}", // Add Bearer token here
+        },
+        body: postBody);
+
+    // Checking if the response was successful
+    if (response.statusCode == 200) {
+      return loginVerificationFromJson(response.body); // Parse response
+    } else {
+      throw Exception('Failed to verify login: ${response.statusCode}');
+    }
+  }
+
   Future<LoginResponse> getLoginResponse(
       String? email, String password, String loginBy) async {
     var post_body = jsonEncode({

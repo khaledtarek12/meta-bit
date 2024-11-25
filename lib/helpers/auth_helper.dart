@@ -1,3 +1,4 @@
+import 'package:active_ecommerce_flutter/data_model/login_verefication.dart';
 import 'package:active_ecommerce_flutter/helpers/shared_value_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/system_config.dart';
 import 'package:active_ecommerce_flutter/repositories/auth_repository.dart';
@@ -25,6 +26,11 @@ class AuthHelper {
     }
   }
 
+  setUservrefiy(LoginVerification loginVerfiy) {
+    user_status.$ = loginVerfiy.status;
+    user_status.save();
+  }
+
   clearUserData() {
     SystemConfig.systemUser = null;
     is_logged_in.$ = false;
@@ -41,7 +47,8 @@ class AuthHelper {
     user_phone.save();
     avatar_original.$ = "";
     avatar_original.save();
-
+    user_status.$ = "0";
+    user_status.save();
     temp_user_id.$ = "";
     temp_user_id.save();
   }

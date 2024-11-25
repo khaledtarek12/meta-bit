@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, deprecated_member_use
+
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'dart:math';
@@ -29,6 +31,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:twitter_login/twitter_login.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../custom/loading.dart';
 import '../../repositories/address_repository.dart';
@@ -101,6 +104,15 @@ class _LoginState extends State<Login> {
 
     var loginResponse = await AuthRepository().getLoginResponse(
         _login_by == 'email' ? email : _phone, password, _login_by);
+    // store token
+    access_token.$ = loginResponse.access_token;
+    access_token.save();
+
+    user_id.$ = loginResponse.user!.id;
+    user_id.save();
+    var loginVerify =
+        await AuthRepository().verifyLogin(loginResponse.user!.id.toString());
+
     Loading.close();
 
     // empty temp user id after logged in
@@ -120,45 +132,38 @@ class _LoginState extends State<Login> {
     } else {
       print("in the success block ");
 
-      ToastComponent.showDialog(
-        loginResponse.message!,
-      );
-
       AuthHelper().setUserData(loginResponse);
-
-      // push notification starts
-      if (OtherConfig.USE_PUSH_NOTIFICATION) {
-        final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-
-        await _fcm.requestPermission(
-          alert: true,
-          announcement: false,
-          badge: true,
-          carPlay: false,
-          criticalAlert: false,
-          provisional: false,
-          sound: true,
-        );
-
-        String? fcmToken;
-        try {
-          fcmToken = await _fcm.getToken();
-        } catch (e) {
-          print('Caught exception: $e');
-        }
-
-        print("--fcm token--");
-        // print("token: $fcmToken");
-        // update device token
-        if (fcmToken != null && is_logged_in.$) {
-          var deviceTokenUpdateResponse =
-              await ProfileRepository().getDeviceTokenUpdateResponse(fcmToken);
-        }
-      }
-
+      AuthHelper().setUservrefiy(loginVerify);
       // redirect
       if (loginResponse.user!.emailVerified!) {
-        context.push("/");
+        if (loginVerify.status == "5") {
+          ToastComponent.showDialog(
+            loginVerify.message!,
+          );
+          // Redirect to user verification link
+          String verificationUrl =
+              "https://meta-bit.io/api/v2/user-verification/${loginResponse.user!.id}";
+          // Use the url_launcher package for redirection
+          if (await canLaunch(verificationUrl)) {
+            await launch(verificationUrl);
+          } else {
+            throw 'Could not launch $verificationUrl';
+          }
+        } else if (loginVerify.status == "0") {
+          ToastComponent.showDialog(
+            loginVerify.message!,
+          );
+        } else if (loginVerify.status == "2") {
+          ToastComponent.showDialog(
+            loginVerify.message!,
+          );
+          context.pushNamed("/");
+        } else if (loginVerify.status == "1") {
+          ToastComponent.showDialog(
+            loginVerify.message!,
+          );
+          context.pushNamed("/");
+        }
       } else {
         if ((mail_verification_status.$ && _login_by == "email") ||
             (mail_verification_status.$ && _login_by == "phone")) {
@@ -169,7 +174,37 @@ class _LoginState extends State<Login> {
                 );
           }));
         } else {
-          context.push("/");
+          context.pushNamed("/");
+        }
+
+        // push notification starts
+        if (OtherConfig.USE_PUSH_NOTIFICATION) {
+          final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+
+          await _fcm.requestPermission(
+            alert: true,
+            announcement: false,
+            badge: true,
+            carPlay: false,
+            criticalAlert: false,
+            provisional: false,
+            sound: true,
+          );
+
+          String? fcmToken;
+          try {
+            fcmToken = await _fcm.getToken();
+          } catch (e) {
+            print('Caught exception: $e');
+          }
+
+          print("--fcm token--");
+          // print("token: $fcmToken");
+          // update device token
+          if (fcmToken != null && is_logged_in.$) {
+            var deviceTokenUpdateResponse = await ProfileRepository()
+                .getDeviceTokenUpdateResponse(fcmToken);
+          }
         }
       }
     }
@@ -190,6 +225,8 @@ class _LoginState extends State<Login> {
             userData['email'].toString(),
             userData['id'].toString(),
             access_token: facebookLogin.accessToken!.tokenString);
+        var loginVerify = await AuthRepository()
+            .verifyLogin(loginResponse.user!.id.toString());
         // print("..........................${loginResponse.toString()}");
         if (loginResponse.result == false) {
           ToastComponent.showDialog(
@@ -201,6 +238,8 @@ class _LoginState extends State<Login> {
           );
 
           AuthHelper().setUserData(loginResponse);
+          AuthHelper().setUservrefiy(loginVerify);
+
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return Main();
           }));
@@ -214,7 +253,6 @@ class _LoginState extends State<Login> {
       }
     } on Exception catch (e) {
       print(e);
-      // TODO
     }
   }
 
@@ -235,6 +273,8 @@ class _LoginState extends State<Login> {
       var loginResponse = await AuthRepository().getSocialLoginResponse(
           "google", googleUser.displayName, googleUser.email, googleUser.id,
           access_token: accessToken);
+      var loginVerify =
+          await AuthRepository().verifyLogin(loginResponse.user!.id.toString());
 
       if (loginResponse.result == false) {
         ToastComponent.showDialog(
@@ -245,6 +285,7 @@ class _LoginState extends State<Login> {
           loginResponse.message!,
         );
         AuthHelper().setUserData(loginResponse);
+        AuthHelper().setUservrefiy(loginVerify);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Main();
         }));
@@ -252,7 +293,6 @@ class _LoginState extends State<Login> {
       GoogleSignIn().disconnect();
     } on Exception catch (e) {
       print("error is ....... $e");
-      // TODO
     }
   }
 
@@ -277,6 +317,8 @@ class _LoginState extends State<Login> {
           authResult.user!.id.toString(),
           access_token: authResult.authToken,
           secret_token: authResult.authTokenSecret);
+      var loginVerify =
+          await AuthRepository().verifyLogin(loginResponse.user!.id.toString());
 
       if (loginResponse.result == false) {
         ToastComponent.showDialog(
@@ -287,13 +329,13 @@ class _LoginState extends State<Login> {
           loginResponse.message!,
         );
         AuthHelper().setUserData(loginResponse);
+        AuthHelper().setUservrefiy(loginVerify);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Main();
         }));
       }
     } on Exception catch (e) {
       print("error is ....... $e");
-      // TODO
     }
   }
 
@@ -336,6 +378,8 @@ class _LoginState extends State<Login> {
           appleCredential.email,
           appleCredential.userIdentifier,
           access_token: appleCredential.identityToken);
+      var loginVerify =
+          await AuthRepository().verifyLogin(loginResponse.user!.id.toString());
 
       if (loginResponse.result == false) {
         ToastComponent.showDialog(
@@ -346,13 +390,13 @@ class _LoginState extends State<Login> {
           loginResponse.message!,
         );
         AuthHelper().setUserData(loginResponse);
+        AuthHelper().setUservrefiy(loginVerify);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Main();
         }));
       }
     } on Exception catch (e) {
       print(e);
-      // TODO
     }
 
     // Create an `OAuthCredential` from the credential returned by Apple.

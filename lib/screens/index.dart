@@ -1,3 +1,7 @@
+// ignore_for_file: must_be_immutable
+
+import 'dart:developer';
+
 import 'package:active_ecommerce_flutter/helpers/addons_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/auth_helper.dart';
 import 'package:active_ecommerce_flutter/helpers/business_setting_helper.dart';
@@ -9,6 +13,8 @@ import 'package:active_ecommerce_flutter/screens/main.dart';
 import 'package:active_ecommerce_flutter/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'auth/login.dart';
 
 class Index extends StatefulWidget {
   Index({super.key, this.goBack = true});
@@ -39,7 +45,6 @@ class _IndexState extends State<Index> {
 
   @override
   void initState() {
-    // TODO: implement initState
     getSharedValueHelperData().then((value) {
       Future.delayed(Duration(seconds: 3)).then((value) {
         SystemConfig.isShownSplashScreed = true;
@@ -53,12 +58,17 @@ class _IndexState extends State<Index> {
 
   @override
   Widget build(BuildContext context) {
+    log(access_token.$!);
+    log(user_id.$.toString());
+    log(user_status.$.toString());
     SystemConfig.context ??= context;
     return Scaffold(
       body: SystemConfig.isShownSplashScreed
-          ? Main(
-              go_back: widget.goBack,
-            )
+          ? access_token.$!.isNotEmpty
+              ? user_status.$ == "1"
+                  ? Main()
+                  : Login()
+              : Login()
           : SplashScreen(),
     );
   }

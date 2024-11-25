@@ -15,6 +15,10 @@ final SharedValue<String?> access_token = SharedValue(
   value: "", // initial value
   key: "access_token", // disk storage key for shared_preferences
 );
+final SharedValue<String?> user_status = SharedValue(
+  value: "", // initial value
+  key: "user_status", // disk storage key for shared_preferences
+);
 
 final SharedValue<int?> user_id = SharedValue(
   value: 0, // initial value
