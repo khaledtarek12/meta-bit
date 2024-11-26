@@ -174,7 +174,34 @@ class _LoginState extends State<Login> {
                 );
           }));
         } else {
-          context.pushNamed("/");
+          if (loginVerify.status == "5") {
+            ToastComponent.showDialog(
+              loginVerify.message!,
+            );
+            // Redirect to user verification link
+            String verificationUrl =
+                "https://meta-bit.io/api/v2/user-verification/${loginResponse.user!.id}";
+            // Use the url_launcher package for redirection
+            if (await canLaunch(verificationUrl)) {
+              await launch(verificationUrl);
+            } else {
+              throw 'Could not launch $verificationUrl';
+            }
+          } else if (loginVerify.status == "0") {
+            ToastComponent.showDialog(
+              loginVerify.message!,
+            );
+          } else if (loginVerify.status == "2") {
+            ToastComponent.showDialog(
+              loginVerify.message!,
+            );
+            context.pushNamed("/");
+          } else if (loginVerify.status == "1") {
+            ToastComponent.showDialog(
+              loginVerify.message!,
+            );
+            context.pushNamed("/");
+          }
         }
 
         // push notification starts

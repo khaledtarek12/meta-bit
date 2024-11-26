@@ -65,7 +65,7 @@ class _IndexState extends State<Index> {
     return Scaffold(
       body: SystemConfig.isShownSplashScreed
           ? access_token.$!.isNotEmpty
-              ? user_status.$ == "1"
+              ? user_status.$ == "1" || user_status.$ == "2"
                   ? Main()
                   : Login()
               : Login()
