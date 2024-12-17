@@ -568,21 +568,26 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   : Container(),
                               SizedBox(height: 2),
 
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    12.0, 0.0, 0.0, 0.0),
-                                child: buildHomeMenu(context, homeData),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.fromLTRB(
+                              //       12.0, 0.0, 0.0, 0.0),
+                              //   child: buildHomeMenu(context, homeData),
+                              // ),
                               SizedBox(height: 16),
                               //Header Banner
                               Stack(
                                 children: [
-                                  HomeCarouselSlider(
-                                    homeData: homeData,
-                                    context: context,
+                                  Column(
+                                    children: [
+                                      HomeCarouselSlider(
+                                        homeData: homeData,
+                                        context: context,
+                                      ),
+                                      SizedBox(height: 15),
+                                    ],
                                   ),
                                   Positioned(
-                                    bottom: 5,
+                                    bottom: 0,
                                     left: 50,
                                     right: 50,
                                     child: GestureDetector(
@@ -596,7 +601,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 16),
+                              SizedBox(height: 25),
                               //Home slider one
                               HomeBannerOne(
                                 context: context,
@@ -663,9 +668,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                             ),
                           ),
 
-                          SliverList(
-                            delegate: SliverChildListDelegate([PhotoWidget()]),
-                          ),
+                          // SliverList(
+                          //   delegate: SliverChildListDelegate([PhotoWidget()]),
+                          // ),
                           //Featured Products
                           SliverList(
                             delegate: SliverChildListDelegate([

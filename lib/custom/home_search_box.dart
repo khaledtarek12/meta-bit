@@ -10,7 +10,7 @@ class HomeSearchBox extends StatelessWidget {
     return Container(
       height: 50,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(50),
         color: Color(0xffE4E3E8),
         boxShadow: [
           BoxShadow(

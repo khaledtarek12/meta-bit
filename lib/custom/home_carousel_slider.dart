@@ -24,8 +24,8 @@ class HomeCarouselSlider extends StatelessWidget {
       );
     } else if (homeData!.carouselImageList.isNotEmpty) {
       return Container(
-        height: 200,
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        height: 300,
+        padding: EdgeInsets.symmetric(horizontal: 20),
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -40,7 +40,7 @@ class HomeCarouselSlider extends StatelessWidget {
         ),
         child: CarouselSlider(
           options: CarouselOptions(
-            aspectRatio: 338 / 140,
+            aspectRatio: 60 / 120,
             viewportFraction: 1,
             initialPage: 0,
             enableInfiniteScroll: true,
@@ -59,6 +59,7 @@ class HomeCarouselSlider extends StatelessWidget {
               builder: (BuildContext context) {
                 return Container(
                   height: 300,
+                  padding: EdgeInsets.only(left: 12),
                   width: double.infinity,
                   child: InkWell(
                     onTap: () {
@@ -66,7 +67,7 @@ class HomeCarouselSlider extends StatelessWidget {
                       print(url);
                       GoRouter.of(context).go(url);
                     },
-                    child: AIZImage.radiusImage(i.photo, 12),
+                    child: AIZImage.radiusImage(i.photo, 16),
                   ),
                 );
               },

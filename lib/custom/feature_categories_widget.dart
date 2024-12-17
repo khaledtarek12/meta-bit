@@ -22,7 +22,7 @@ class FeaturedCategoriesWidget extends StatelessWidget {
     } else if (homeData.featuredCategoryList.isNotEmpty) {
       return GridView.builder(
         padding:
-        const EdgeInsets.only(left: 20, right: 20, top: 11, bottom: 24),
+            const EdgeInsets.only(left: 20, right: 20, top: 11, bottom: 24),
         scrollDirection: Axis.horizontal,
         controller: homeData.featuredCategoryScrollController,
         itemCount: homeData.featuredCategoryList.length,
@@ -65,10 +65,18 @@ class FeaturedCategoriesWidget extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/placeholder.png',
+                              placeholder: homeData.featuredCategoryList[index]
+                                          .coverImage !=
+                                      null
+                                  ? homeData
+                                      .featuredCategoryList[index].coverImage!
+                                  : 'assets/placeholder.png',
                               // Handling null safely for coverImage
-                              image: homeData.featuredCategoryList[index].coverImage != null
-                                  ? homeData.featuredCategoryList[index].coverImage!
+                              image: homeData.featuredCategoryList[index]
+                                          .coverImage !=
+                                      null
+                                  ? homeData
+                                      .featuredCategoryList[index].coverImage!
                                   : 'assets/placeholder.png',
                               fit: BoxFit.cover,
                             ),
@@ -111,4 +119,3 @@ class FeaturedCategoriesWidget extends StatelessWidget {
     }
   }
 }
-
