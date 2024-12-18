@@ -431,7 +431,7 @@
 //     );
 //   }
 
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unused_local_variable
 
 //   Container buildProductLoadingContainer(HomePresenter homeData) {
 //     return Container(
@@ -459,7 +459,6 @@ import 'package:MetaBit/screens/wishlist/widgets/home_banner_four.dart';
 import 'package:MetaBit/screens/flash_deal/flash_deal_list.dart';
 import 'package:MetaBit/screens/product/todays_deal_products.dart';
 import 'package:MetaBit/screens/top_sellers.dart';
-import 'package:MetaBit/single_banner/sincle_banner_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

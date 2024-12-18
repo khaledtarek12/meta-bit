@@ -105,6 +105,7 @@ dependencies:
   validators: ^3.0.0
 
   webview_flutter: ^4.2.0
+  stylish_bottom_bar: ^1.1.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
 
