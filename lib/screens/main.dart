@@ -11,6 +11,7 @@ import 'package:MetaBit/screens/auth/login.dart';
 import 'package:MetaBit/screens/category_list_n_product/category_products.dart';
 import 'package:MetaBit/screens/home.dart';
 import 'package:MetaBit/screens/profile.dart';
+import 'package:MetaBit/screens/swap/swap_screen.dart';
 import 'package:MetaBit/screens/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,12 +62,9 @@ class _MainState extends State<Main> {
   void initState() {
     _children = [
       Home(),
-      CategoryProducts(slug: ''),
-      // Cart(
-      //   has_bottomnav: true,
-      //   from_navigation: true,
-      //   counter: counter,
-      // ),
+      // CategoryProducts(slug: ''),
+      SwapScreen(),
+
       Wallet(),
       Profile()
     ];
@@ -208,7 +206,7 @@ class _MainState extends State<Main> {
                     selectedIcon: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Image.asset(
-                        "assets/categories.png",
+                        "assets/swap.png",
                         color: _currentIndex == 1
                             ? MyTheme.accent_color
                             : Color.fromRGBO(153, 153, 153, 1),
@@ -219,14 +217,14 @@ class _MainState extends State<Main> {
                     icon: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Image.asset(
-                        "assets/categories.png",
+                        "assets/swap.png",
                         color: _currentIndex == 1
                             ? MyTheme.accent_color
                             : Color.fromRGBO(153, 153, 153, 1),
                         height: 20,
                       ),
                     ),
-                    title: Text(AppLocalizations.of(context)!.categories_ucf)),
+                    title: Text(AppLocalizations.of(context)!.swap)),
                 if (wallet_system_status.$)
                   BottomBarItem(
                       selectedColor: MyTheme.accent_color,
