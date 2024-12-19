@@ -54,7 +54,8 @@ class _ProductCardBlackState extends State<ProductCardBlack> {
       },
       child: Container(
         //decoration: BoxDecorations.buildBoxDecoration_1(),
-        //decoration: BoxDecoration(color: Color(0xffF6F5FA)),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(12)),
         child: Stack(
           children: [
             Column(
@@ -130,7 +131,7 @@ class _ProductCardBlackState extends State<ProductCardBlack> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: TextStyle(
-                            color: Color(0xff000000),
+                            color: Colors.blue,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                           ),

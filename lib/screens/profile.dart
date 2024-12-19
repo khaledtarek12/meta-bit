@@ -202,7 +202,17 @@ class _ProfileState extends State<Profile> {
           Container(
               height: DeviceInfo(context).height! / 1.6,
               width: DeviceInfo(context).width,
-              color: MyTheme.accent_color,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFFFEA1A1), // Soft pink
+                    Color(0xFFD98FEE), // Light purple
+                    Color(0xFF849DFE), // Soft blue
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
               alignment: Alignment.topRight,
               child: Image.asset(
                 "assets/background_1.png",

@@ -1,5 +1,6 @@
 import 'package:MetaBit/helpers/shimmer_helper.dart';
 import 'package:MetaBit/presenter/home_presenter.dart';
+import 'package:MetaBit/screens/category_list_n_product/category_list.dart';
 import 'package:MetaBit/screens/category_list_n_product/category_products.dart';
 import 'package:flutter/material.dart';
 import '../my_theme.dart';
@@ -39,9 +40,13 @@ class FeaturedCategoriesWidget extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return CategoryProducts(
-                        slug: homeData.featuredCategoryList[index].slug,
+                      return CategoryList(
+                        slug: "",
+                        is_base_category: true,
                       );
+                      // return CategoryProducts(
+                      //   slug: homeData.featuredCategoryList[index].slug,
+                      // );
                     },
                   ),
                 );

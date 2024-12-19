@@ -244,8 +244,8 @@ class _MiniProductCardState extends State<MiniProductCard> {
       },
       child: Container(
         width: 140,
-        //  decoration: BoxDecorations.buildBoxDecoration_1(),
-
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(12)),
         child: Stack(children: [
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,7 +286,7 @@ class _MiniProductCardState extends State<MiniProductCard> {
                         : widget.main_price!,
                     maxLines: 1,
                     style: TextStyle(
-                        color: Color(0xff000000),
+                        color: Colors.blue,
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),

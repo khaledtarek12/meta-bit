@@ -600,12 +600,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 25),
-                              //Home slider one
-                              HomeBannerOne(
-                                context: context,
-                                homeData: homeData,
-                              ),
                             ]),
                           ),
 
@@ -639,34 +633,32 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                          SliverList(
-                            delegate: SliverChildListDelegate([
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    20.0, 0.0, 0.0, 15.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Flash Sale',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ]),
-                          ),
-
-                          ///homeBannerfour
-                          SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 237,
-                              child: HomeBannerFour(),
-                            ),
-                          ),
-
+                          // SliverList(
+                          //   delegate: SliverChildListDelegate([
+                          //     Padding(
+                          //       padding: const EdgeInsets.fromLTRB(
+                          //           20.0, 0.0, 0.0, 15.0),
+                          //       child: Column(
+                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                          //         children: [
+                          //           Text(
+                          //             'Flash Sale',
+                          //             style: TextStyle(
+                          //                 fontSize: 18,
+                          //                 fontWeight: FontWeight.w700),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ]),
+                          // ),
+                          // ///homeBannerfour
+                          // SliverToBoxAdapter(
+                          //   child: SizedBox(
+                          //     height: 237,
+                          //     child: HomeBannerFour(),
+                          //   ),
+                          // ),
                           // SliverList(
                           //   delegate: SliverChildListDelegate([PhotoWidget()]),
                           // ),
