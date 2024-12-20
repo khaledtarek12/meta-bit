@@ -41,11 +41,13 @@ class FeaturedCategoriesWidget extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) {
                       return CategoryList(
-                        slug: "",
+                        slug: '',
+                        id: homeData.featuredCategoryList[index].id,
                         is_base_category: true,
                       );
                       // return CategoryProducts(
                       //   slug: homeData.featuredCategoryList[index].slug,
+                      //   id: homeData.featuredCategoryList[index].id,
                       // );
                     },
                   ),
@@ -69,20 +71,16 @@ class FeaturedCategoriesWidget extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: FadeInImage.assetNetwork(
-                              placeholder: homeData.featuredCategoryList[index]
-                                          .coverImage !=
-                                      null
-                                  ? homeData
-                                      .featuredCategoryList[index].coverImage!
-                                  : 'assets/placeholder.png',
-                              // Handling null safely for coverImage
-                              image: homeData.featuredCategoryList[index]
-                                          .coverImage !=
-                                      null
-                                  ? homeData
-                                      .featuredCategoryList[index].coverImage!
-                                  : 'assets/placeholder.png',
+                            child: FadeInImage(
+                              placeholder: AssetImage('assets/placeholder.png'),
+                              image:
+                                  homeData.featuredCategoryList[index].banner !=
+                                              null &&
+                                          homeData.featuredCategoryList[index]
+                                              .banner!.isNotEmpty
+                                      ? NetworkImage(homeData
+                                          .featuredCategoryList[index].banner!)
+                                      : AssetImage('assets/placeholder.png'),
                               fit: BoxFit.cover,
                             ),
                           ),

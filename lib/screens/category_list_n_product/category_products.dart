@@ -380,6 +380,7 @@
 import 'package:MetaBit/custom/device_info.dart';
 import 'package:MetaBit/custom/useful_elements.dart';
 import 'package:MetaBit/data_model/category_response.dart';
+import 'package:MetaBit/dummy_data/products.dart';
 import 'package:MetaBit/helpers/shimmer_helper.dart';
 import 'package:MetaBit/my_theme.dart';
 import 'package:MetaBit/repositories/category_repository.dart';
@@ -390,8 +391,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class CategoryProducts extends StatefulWidget {
-  CategoryProducts({Key? key, required this.slug}) : super(key: key);
+  CategoryProducts({Key? key, required this.slug,required this.id}) : super(key: key);
   final String slug;
+  final int id;
 
   @override
   _CategoryProductsState createState() => _CategoryProductsState();
@@ -418,7 +420,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
   //   setState(() {});
   // }
   getSubCategory() async {
-    var res = await CategoryRepository().getCategories(parent_id: widget.slug);
+    var res = await CategoryRepository().getCategories(parent_id: widget.id);
     if (res.categories != null) {
       _subCategoryList.addAll(res.categories!);
     }
@@ -427,7 +429,6 @@ class _CategoryProductsState extends State<CategoryProducts> {
 
   getCategoryInfo() async {
     var res = await CategoryRepository().getCategoryInfo(widget.slug);
-    print(res.categories.toString());
     if (res.categories?.isNotEmpty ?? false) {
       categoryInfo = res.categories?.first ?? null;
     }
@@ -436,7 +437,6 @@ class _CategoryProductsState extends State<CategoryProducts> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getCategoryInfo();
     fetchAllDate();
@@ -466,7 +466,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
         .getCategoryProducts(id: widget.slug, page: _page, name: _searchKey);
     _productList.addAll(productResponse.products!);
     _isInitial = false;
-    _totalData = productResponse.meta!.total;
+    _totalData = productList.length;
     _showLoadingContainer = false;
     setState(() {});
   }
@@ -751,6 +751,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
                 builder: (context) {
                   return CategoryProducts(
                     slug: _subCategoryList[index].slug!,
+                    id: _subCategoryList[index].id!,
                   );
                 },
               ),
@@ -828,7 +829,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
           ),
         ),
       );
-    } else if (_totalData == 0) {
+    } else if (_productList.isEmpty) {
       return Center(
           child: Text(AppLocalizations.of(context)!.no_data_is_available));
     } else {

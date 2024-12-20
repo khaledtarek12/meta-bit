@@ -751,6 +751,7 @@ class HomePresenter extends ChangeNotifier {
 
   fetchFeaturedCategories() async {
     var categoryResponse = await CategoryRepository().getFeturedCategories();
+    
     featuredCategoryList.addAll(categoryResponse.categories!);
     isCategoryInitial = false;
     notifyListeners();
@@ -782,9 +783,9 @@ class HomePresenter extends ChangeNotifier {
 
       isFeaturedProductInitial = false;
 
-      if (productResponse.meta != null) {
-        totalFeaturedProductData = productResponse.meta!.total;
-      } else {}
+    
+        totalFeaturedProductData = featuredProductList.length;
+
 
       showFeaturedLoadingContainer = false;
       notifyListeners();
@@ -810,9 +811,9 @@ class HomePresenter extends ChangeNotifier {
     }
     isAllProductInitial = false;
 
-    if (productResponse.meta != null) {
-      totalAllProductData = productResponse.meta!.total;
-    }
+
+      totalAllProductData = allProductList.length;
+    
 
     showAllLoadingContainer = false;
     notifyListeners();

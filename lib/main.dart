@@ -178,6 +178,7 @@ var routes = GoRouter(
               pageBuilder: (BuildContext context, GoRouterState state) =>
                   MaterialPage(
                       child: (CategoryList(
+                    id: 0,
                     slug: getParameter(state, "slug"),
                   )))),
           GoRoute(
@@ -185,6 +186,7 @@ var routes = GoRouter(
               pageBuilder: (BuildContext context, GoRouterState state) =>
                   MaterialPage(
                       child: (CategoryProducts(
+                        id: 0,
                     slug: getParameter(state, "slug"),
                   )))),
           GoRoute(

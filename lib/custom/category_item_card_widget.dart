@@ -80,6 +80,7 @@
 //   }
 // }
 
+import 'package:MetaBit/custom/box_decorations.dart';
 import 'package:flutter/material.dart';
 
 import '../data_model/category_response.dart';
@@ -103,7 +104,7 @@ class CategoryItemCardWidget extends StatelessWidget {
     var itemWidth =
         ((DeviceInfo(context).width! - 48) / 3); // Adjust spacing between items
     return Container(
-      // decoration: BoxDecorations.buildBoxDecoration_1(),
+      decoration: BoxDecoration(color: Colors.white),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -112,6 +113,7 @@ class CategoryItemCardWidget extends StatelessWidget {
               builder: (context) {
                 return CategoryProducts(
                   slug: categoryResponse.categories![index].slug ?? "",
+                  id: categoryResponse.categories![index].id!,
                 );
               },
             ),
@@ -129,7 +131,7 @@ class CategoryItemCardWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
                 child: FadeInImage.assetNetwork(
                   placeholder: 'assets/placeholder.png',
-                  image: categoryResponse.categories![index].coverImage ?? '',
+                  image: categoryResponse.categories![index].banner ?? '',
                   //  image: categoryResponse.categories![index].banner!,
                   fit: BoxFit.cover,
                 ),

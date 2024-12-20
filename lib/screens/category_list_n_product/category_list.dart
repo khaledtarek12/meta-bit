@@ -223,6 +223,8 @@
 //     );
 //   }
 // }
+import 'dart:developer';
+
 import 'package:MetaBit/custom/btn.dart';
 import 'package:MetaBit/custom/device_info.dart';
 import 'package:MetaBit/custom/useful_elements.dart';
@@ -246,9 +248,11 @@ class CategoryList extends StatefulWidget {
     this.is_base_category = false,
     this.is_top_category = false,
     this.bottomAppbarIndex,
+    required this.id,
   }) : super(key: key);
 
   final String slug;
+  final int id;
   final bool is_base_category;
   final bool is_top_category;
   final BottomAppbarIndex? bottomAppbarIndex;
@@ -350,7 +354,7 @@ class _CategoryListState extends State<CategoryList> {
   buildCategoryList() {
     var data = widget.is_top_category
         ? CategoryRepository().getTopCategories()
-        : CategoryRepository().getCategories(parent_id: widget.slug);
+        : CategoryRepository().getCategories(parent_id: widget.id);
     return FutureBuilder(
       future: data,
       builder: (context, AsyncSnapshot<CategoryResponse> snapshot) {
@@ -431,6 +435,7 @@ class _CategoryListState extends State<CategoryList> {
                         builder: (context) {
                           return CategoryProducts(
                             slug: widget.slug,
+                            id: widget.id,
                           );
                         },
                       ),

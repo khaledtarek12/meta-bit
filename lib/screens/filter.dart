@@ -209,7 +209,7 @@ class _FilterState extends State<Filter> {
 
     _productList.addAll(productResponse.products!);
     _isProductInitial = false;
-    _totalProductData = productResponse.meta!.total;
+    _totalProductData = _productList.length;
     _showProductLoadingContainer = false;
     setState(() {});
   }

@@ -35,7 +35,7 @@ class HomeSearchBox extends StatelessWidget {
               width: 10,
             ),
             Text(
-              AppLocalizations.of(context)!.search_in_active_ecommerce_cms,
+              AppLocalizations.of(context)!.search_in_MetaBit,
               style: TextStyle(fontSize: 13.0, color: Color(0xff7B7980)),
             ),
           ],

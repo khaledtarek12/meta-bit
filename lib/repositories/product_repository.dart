@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:MetaBit/app_config.dart';
 import 'package:MetaBit/data_model/category.dart';
@@ -80,6 +81,7 @@ class ProductRepository {
     final response = await ApiRequest.get(url: url, headers: {
       "App-Language": app_language.$!,
     });
+    log(response.body);
     // print('Prodcut Details:${response.body}');
     return productMiniResponseFromJson(response.body);
   }

@@ -68,7 +68,7 @@ class _DigitalProductsState extends State<DigitalProducts> {
         await ProductRepository().getDigitalProducts(page: _page);
 
     _digitalProducts.addAll(digitalProductRes.products!);
-    _totalData = digitalProductRes.meta!.total;
+    _totalData =_digitalProducts.length;
     _dataFetch = true;
     _showLoadingContainer = false;
     setState(() {});

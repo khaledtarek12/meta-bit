@@ -171,7 +171,6 @@ String productMiniResponseToJson(ProductMiniResponse data) =>
 class ProductMiniResponse {
   ProductMiniResponse({
     this.products,
-    this.meta,
     this.success,
     this.status,
   });
@@ -179,7 +178,6 @@ class ProductMiniResponse {
   List<Product>? products;
   bool? success;
   int? status;
-  Meta? meta;
 
   factory ProductMiniResponse.fromJson(Map<String, dynamic> json) =>
       ProductMiniResponse(
@@ -188,7 +186,7 @@ class ProductMiniResponse {
                 json["data"].map((x) => Product.fromJson(x)),
               )
             : null,
-        meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
+      
         success: json["success"],
         status: json["status"],
       );
@@ -199,7 +197,6 @@ class ProductMiniResponse {
         "data": products != null
             ? List<dynamic>.from(products!.map((x) => x.toJson()))
             : null,
-        "meta": meta == null ? null : meta!.toJson(),
         "success": success,
         "status": status,
       };

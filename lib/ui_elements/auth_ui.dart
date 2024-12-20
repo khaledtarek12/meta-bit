@@ -153,8 +153,7 @@ class AuthScreen {
                               decoration: BoxDecoration(
                                   color: MyTheme.white,
                                   borderRadius: BorderRadius.circular(8)),
-                              child: Image.asset(
-                                  'assets/login_registration_form_logo.png'),
+                              child: Image.asset('assets/logo.png'),
                             ),
                           ],
                         ),
