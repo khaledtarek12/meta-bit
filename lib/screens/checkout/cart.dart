@@ -31,7 +31,6 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<CartProvider>(context, listen: false).initState(context);

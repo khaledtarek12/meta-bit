@@ -2764,11 +2764,14 @@
 //   </div>
 // </body>
 
+// ignore_for_file: must_be_immutable
+
 // </html>
 // """;
 //   }
 // }
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:badges/badges.dart' as badges;
 import 'package:carousel_slider/carousel_slider.dart';
@@ -3165,7 +3168,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
     temp_user_id.$ = cartAddResponse.tempUserId;
     temp_user_id.save();
-
+    // log(cartAddResponse.result);
     if (cartAddResponse.result == false) {
       ToastComponent.showDialog(
         cartAddResponse.message,
@@ -3173,7 +3176,6 @@ class _ProductDetailsState extends State<ProductDetails>
       return;
     } else {
       Provider.of<CartCounter>(context!, listen: false).getCount();
-
       if (mode == "add_to_cart") {
         if (snackbar != null) {
           ScaffoldMessenger.of(context).showSnackBar(snackbar);

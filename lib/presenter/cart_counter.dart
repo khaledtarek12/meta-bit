@@ -13,6 +13,7 @@
 //   }
 // }
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:MetaBit/repositories/cart_repository.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,8 @@ class CartCounter extends ChangeNotifier {
 
   Future<void> getCount() async {
     var res = await CartRepository().getCartCount();
-    // Ensure res.count is not null
-    cartCounter = res.count ?? 0; // Default to 0 if count is null
+    cartCounter = res.count ?? 0;
+    log("cart counter${cartCounter.toString()}");
     notifyListeners();
   }
 }

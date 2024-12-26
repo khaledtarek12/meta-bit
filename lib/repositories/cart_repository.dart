@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:MetaBit/app_config.dart';
 import 'package:MetaBit/data_model/cart_add_response.dart';
@@ -179,7 +180,7 @@ class CartRepository {
       middleware: BannedUser(),
     );
 
-    // print(response.body);
+    log("add  cart response  ${response.statusCode}");
 
     return cartAddResponseFromJson(response.body);
   }

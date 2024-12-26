@@ -28,6 +28,7 @@ import 'package:MetaBit/screens/product/todays_deal_products.dart';
 import 'package:MetaBit/screens/product/top_selling_products.dart';
 import 'package:MetaBit/screens/refund_request.dart';
 import 'package:MetaBit/screens/top_sellers.dart';
+import 'package:MetaBit/screens/wallet_main_screen.dart';
 import 'package:MetaBit/screens/wholesales_screen.dart';
 import 'package:MetaBit/screens/wishlist/widgets/page_animation.dart';
 import 'package:badges/badges.dart' as badges;
@@ -947,7 +948,8 @@ class _ProfileState extends State<Profile> {
                   child: buildSettingAndAddonsHorizontalMenuItem(
                       "assets/wallet.png",
                       AppLocalizations.of(context)!.my_wallet_ucf, () {
-                    Navigator.push(context, PageAnimation.fadeRoute(Wallet()));
+                    Navigator.push(
+                        context, PageAnimation.fadeRoute(WalletMainScreen()));
                   }),
                 ),
               ],

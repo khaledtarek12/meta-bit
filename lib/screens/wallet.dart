@@ -10,6 +10,7 @@ import 'package:MetaBit/my_theme.dart';
 import 'package:MetaBit/repositories/wallet_repository.dart';
 import 'package:MetaBit/screens/checkout/checkout.dart';
 import 'package:MetaBit/screens/main.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -150,24 +151,23 @@ class _WalletState extends State<Wallet> {
             backgroundColor: Color(0xffF2F1F6),
             onRefresh: _onPageRefresh,
             displacement: 10,
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  color: Color(0xffF2F1F6),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, bottom: 0.0, left: 16.0, right: 16.0),
-                    child: _balanceDetails != null
-                        ? buildTopSection(context)
-                        : ShimmerHelper().buildBasicShimmer(height: 150),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    color: Color(0xffF2F1F6),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 8.0, bottom: 0.0, left: 16.0, right: 16.0),
+                      child: _balanceDetails != null
+                          ? buildTopSection(context)
+                          : ShimmerHelper().buildBasicShimmer(height: 150),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 100.0, bottom: 0.0),
-                  child: buildRechargeList(),
-                ),
-              ],
+                  buildRechargeList(),
+                ],
+              ),
             ),
           ),
         ),
@@ -196,7 +196,11 @@ class _WalletState extends State<Wallet> {
       centerTitle: false,
       leading: Builder(
         builder: (context) => IconButton(
-          icon: UsefulElements.backButton(context),
+          icon: Icon(
+              app_language_rtl.$!
+                  ? CupertinoIcons.arrow_right
+                  : CupertinoIcons.arrow_left,
+              color: MyTheme.dark_font_grey),
           onPressed: () {
             if (widget.from_recharge) {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -376,96 +380,73 @@ class _WalletState extends State<Wallet> {
 
 // Top Part Container
   Widget buildTopSection(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          width: DeviceInfo(context).width! / 2.3,
-          height: 90,
-          decoration: BoxDecoration(
-              color: MyTheme.accent_color,
-              borderRadius: BorderRadius.circular(10)),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Text(
-                  AppLocalizations.of(context)!.wallet_balance_ucf,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6.0),
-                child: Text(
-                  convertPrice(_balanceDetails.balance),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              Spacer(),
-              Text(
-                "${AppLocalizations.of(context)!.last_recharged} : ${_balanceDetails.last_recharged}",
-                style: TextStyle(
-                  color: MyTheme.light_grey,
-                  fontSize: 10,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Spacer()
-            ],
-          ),
-        ),
-        Container(
-          width: DeviceInfo(context).width! / 2.3,
-          height: 90,
-          decoration: BoxDecoration(
-            color: Color(0xffFEF0D7), // Background color
-            border: Border.all(color: Colors.amber.shade700, width: 1),
-            borderRadius: BorderRadius.circular(10), // Set border radius here
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(
-                10), // Clip the child to the same border radius
-            child: Btn.basic(
-              minWidth: MediaQuery.of(context).size.width,
-              color: MyTheme.amber,
-              shape: RoundedRectangleBorder(
-                borderRadius: const BorderRadius.all(
-                    Radius.circular(5.0)), // Adjust if needed
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "${AppLocalizations.of(context)!.recharge_wallet_ucf}",
-                    style: TextStyle(
-                      color: MyTheme.font_grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 14),
-                  Image.asset(
-                    "assets/add.png",
-                    height: 20,
-                    width: 20,
-                  ),
-                ],
-              ),
-              onPressed: () {
-                buildShowAddFormDialog(context);
-              },
+    return Container(
+      width: DeviceInfo(context).width! / 2.3,
+      height: 220,
+      decoration: BoxDecoration(
+          color: Color(0xff1574B4), borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Text(
+              AppLocalizations.of(context)!.wallet_balance_ucf,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
             ),
           ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.only(top: 6.0),
+            child: Text(
+              convertPrice(_balanceDetails.balance),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _WalletActionButton(
+                  icon: Icons.add,
+                  label: "Add",
+                  onPressed: () => buildShowAddFormDialog(context),
+                ),
+                SizedBox(width: 20),
+                _WalletActionButton(
+                  icon: Icons.send,
+                  label: "Send",
+                ),
+                SizedBox(width: 20),
+                _WalletActionButton(
+                  icon: Icons.download,
+                  label: "Receive",
+                ),
+                SizedBox(width: 20),
+                _WalletActionButton(
+                  icon: Icons.swap_horiz,
+                  label: "Swap",
+                ),
+              ],
+            ),
+          ),
+          Spacer(),
+          Text(
+            "${AppLocalizations.of(context)!.last_recharged} : ${_balanceDetails.last_recharged}",
+            style: TextStyle(
+              color: MyTheme.light_grey,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Spacer()
+        ],
+      ),
     );
   }
 
@@ -592,6 +573,39 @@ class _WalletState extends State<Wallet> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _WalletActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final void Function()? onPressed;
+  const _WalletActionButton(
+      {required this.icon, required this.label, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: 60,
+          width: 60,
+          decoration: BoxDecoration(
+              color: Color.fromARGB(255, 5, 42, 66).withOpacity(0.5),
+              borderRadius: BorderRadius.circular(16)),
+          child: IconButton(
+            icon: Icon(icon, color: Colors.white),
+            onPressed: onPressed,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          label,
+          style: const TextStyle(
+              color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
+        ),
+      ],
     );
   }
 }

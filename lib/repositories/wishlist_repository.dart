@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:MetaBit/app_config.dart';
 import 'package:MetaBit/helpers/shared_value_helper.dart';
 import 'package:MetaBit/middlewares/banned_user.dart';
@@ -56,7 +58,6 @@ class WishListRepository {
     print(product_slug);
     String url = ("${AppConfig.BASE_URL}/wishlists-add-product/$product_slug");
 
-    // print(url.toString());
     final response = await ApiRequest.get(
         url: url,
         headers: {
@@ -65,7 +66,7 @@ class WishListRepository {
         },
         middleware: BannedUser());
 
-    print(response.body);
+    log(response.body);
 
     return wishListChekResponseFromJson(response.body);
   }
