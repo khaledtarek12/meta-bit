@@ -3,8 +3,7 @@ var this_year = DateTime.now().year.toString();
 class AppConfig {
   static String copyright_text =
       "@MetaBit" + this_year; //this shows in the splash screen
-  static String app_name =
-      "MetaBit"; //this shows in the splash screen
+  static String app_name = "Fressia Pharmacy"; //this shows in the splash screen
 
   static String purchase_code =
       "purchase key"; //enter your purchase code for the app from codecanyon

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, deprecated_member_use
+
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'dart:math';
@@ -214,7 +216,6 @@ class _LoginState extends State<Login> {
       }
     } on Exception catch (e) {
       print(e);
-      // TODO
     }
   }
 
@@ -252,7 +253,6 @@ class _LoginState extends State<Login> {
       GoogleSignIn().disconnect();
     } on Exception catch (e) {
       print("error is ....... $e");
-      // TODO
     }
   }
 
@@ -293,7 +293,6 @@ class _LoginState extends State<Login> {
       }
     } on Exception catch (e) {
       print("error is ....... $e");
-      // TODO
     }
   }
 
@@ -352,7 +351,6 @@ class _LoginState extends State<Login> {
       }
     } on Exception catch (e) {
       print(e);
-      // TODO
     }
 
     // Create an `OAuthCredential` from the credential returned by Apple.

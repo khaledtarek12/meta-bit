@@ -44,22 +44,9 @@ class _SplashScreenState extends State<SplashScreen> {
       color: Colors.white,
       child: InkWell(
         child: Stack(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CircleAvatar(
-              backgroundColor: Colors.transparent,
-              child: Hero(
-                tag: "backgroundImageInSplash",
-                child: Container(
-                  child: Image.asset(
-                      "assets/splash_login_registration_background_image.png"),
-                ),
-              ),
-              radius: 140.0,
-            ),
+          children: [
             Positioned.fill(
-              top: DeviceInfo(context).height! / 2 - 72,
+              top: DeviceInfo(context).height! / 2 - 172,
               child: Column(
                 children: [
                   Padding(
@@ -67,16 +54,16 @@ class _SplashScreenState extends State<SplashScreen> {
                     child: Hero(
                       tag: "splashscreenImage",
                       child: Container(
-                        height: 170,
-                        width: 170,
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                         decoration: BoxDecoration(
                             color: MyTheme.white,
                             borderRadius: BorderRadius.circular(8)),
                         child: Image.asset(
-                          "assets/logoMeta.png",
-                          filterQuality: FilterQuality.low,
+                          height: 300,
+                          width: 300,
+                          "assets/logo-removebg-preview.png",
+                          filterQuality: FilterQuality.high,
                         ),
                       ),
                     ),
@@ -102,22 +89,22 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 51.0),
-                  child: Text(
-                    AppConfig.copyright_text,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 13.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // Positioned.fill(
+            //   child: Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(bottom: 51.0),
+            //       child: Text(
+            //         AppConfig.copyright_text,
+            //         style: TextStyle(
+            //           fontWeight: FontWeight.w400,
+            //           fontSize: 13.0,
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

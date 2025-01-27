@@ -119,9 +119,9 @@ class AuthScreen {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color(0xFFFEA1A1), // Soft pink
-                    Color(0xFFD98FEE), // Light purple
-                    Color(0xFF849DFE), // Soft blue
+                    Color.fromARGB(255, 19, 84, 107),
+                    Color.fromARGB(255, 32, 179, 228),
+                    Color.fromARGB(255, 153, 177, 113),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -153,7 +153,8 @@ class AuthScreen {
                               decoration: BoxDecoration(
                                   color: MyTheme.white,
                                   borderRadius: BorderRadius.circular(8)),
-                              child: Image.asset('assets/logo.png'),
+                              child: Image.asset(
+                                  'assets/logo-removebg-preview.png'),
                             ),
                           ],
                         ),

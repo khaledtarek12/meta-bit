@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, deprecated_member_use
 
 import 'dart:io';
 
@@ -145,10 +145,24 @@ class _MainState extends State<Main> {
             onPressed: () {},
             child: ClipRRect(
               borderRadius: BorderRadius.circular(80),
-              child: Image.asset(
-                "assets/images.jpg",
-                fit: BoxFit.cover,
-                height: 45,
+              child: ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 19, 84, 107),
+                      Color.fromARGB(255, 32, 179, 228),
+                      Color.fromARGB(255, 153, 177, 113),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.srcIn,
+                child: Icon(
+                  Icons.shopping_cart_rounded,
+                  size: 35,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -206,7 +220,7 @@ class _MainState extends State<Main> {
                     selectedIcon: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Image.asset(
-                        "assets/swap.png",
+                        "assets/heart.png",
                         color: _currentIndex == 1
                             ? MyTheme.accent_color
                             : Color.fromRGBO(153, 153, 153, 1),
@@ -217,14 +231,14 @@ class _MainState extends State<Main> {
                     icon: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Image.asset(
-                        "assets/swap.png",
+                        "assets/heart.png",
                         color: _currentIndex == 1
                             ? MyTheme.accent_color
                             : Color.fromRGBO(153, 153, 153, 1),
                         height: 20,
                       ),
                     ),
-                    title: Text(AppLocalizations.of(context)!.swap)),
+                    title: Text(AppLocalizations.of(context)!.my_wishlist_ucf)),
                 if (wallet_system_status.$)
                   BottomBarItem(
                       selectedColor: MyTheme.accent_color,

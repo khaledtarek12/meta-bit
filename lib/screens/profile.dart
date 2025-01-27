@@ -9,7 +9,6 @@ import 'package:MetaBit/custom/lang_text.dart';
 import 'package:MetaBit/custom/toast_component.dart';
 import 'package:MetaBit/helpers/auth_helper.dart';
 import 'package:MetaBit/helpers/shared_value_helper.dart';
-import 'package:MetaBit/helpers/shimmer_helper.dart';
 import 'package:MetaBit/my_theme.dart';
 import 'package:MetaBit/presenter/home_presenter.dart';
 import 'package:MetaBit/presenter/unRead_notification_counter.dart';
@@ -54,7 +53,6 @@ import 'notification/notification_list.dart';
 import 'orders/order_list.dart';
 import 'profile_edit.dart';
 import 'uploads/upload_file.dart';
-import 'wallet.dart';
 import 'wishlist/wishlist.dart';
 
 class Profile extends StatefulWidget {
@@ -206,9 +204,9 @@ class _ProfileState extends State<Profile> {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color(0xFFFEA1A1), // Soft pink
-                    Color(0xFFD98FEE), // Light purple
-                    Color(0xFF849DFE), // Soft blue
+                    Color.fromARGB(255, 19, 84, 107),
+                    Color.fromARGB(255, 32, 179, 228),
+                    Color.fromARGB(255, 153, 177, 113),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -334,11 +332,64 @@ class _ProfileState extends State<Profile> {
                 ),
               ],
             ),
+          // Column(
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.fromLTRB(00.0, 0.0, 0.0, 12),
+          //       child: buildHomeMenu(context),
+          //     ),
+          //   ],
+          // ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(00.0, 0.0, 0.0, 12),
-                child: buildHomeMenu(context),
+              buildBottomVerticalCardListItem("assets/todays_deal.png",
+                  LangText(context).local.todays_deal_ucf, onPressed: () {
+                AIZRoute.push(context, TodaysDealProducts());
+              }),
+              Divider(
+                thickness: 1,
+                color: MyTheme.light_grey,
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildBottomVerticalCardListItem("assets/flash_deal.png",
+                  LangText(context).local.flash_deal_ucf, onPressed: () {
+                AIZRoute.push(context, FlashDealList());
+              }),
+              Divider(
+                thickness: 1,
+                color: MyTheme.light_grey,
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildBottomVerticalCardListItem(
+                  "assets/brands.png", LangText(context).local.brands_ucf,
+                  onPressed: () {
+                AIZRoute.push(context, Filter(selected_filter: "brands"));
+              }),
+              Divider(
+                thickness: 1,
+                color: MyTheme.light_grey,
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildBottomVerticalCardListItem("assets/top_sellers.png",
+                  LangText(context).local.top_sellers_ucf, onPressed: () {
+                AIZRoute.push(context, TopSellers());
+              }),
+              Divider(
+                thickness: 1,
+                color: MyTheme.light_grey,
               ),
             ],
           ),
@@ -1095,12 +1146,17 @@ class _ProfileState extends State<Profile> {
                         : () => null),
               ],
             ),
-          SizedBox(height: 8),
-          Divider(
-            thickness: 1,
-            color: MyTheme.light_grey,
-          ),
-          SizedBox(height: 8),
+          if (conversation_system_status.$)
+            Column(
+              children: [
+                SizedBox(height: 8),
+                Divider(
+                  thickness: 1,
+                  color: MyTheme.light_grey,
+                ),
+                SizedBox(height: 8),
+              ],
+            ),
           if (classified_product_status.$)
             Row(
               children: [
@@ -1206,60 +1262,40 @@ class _ProfileState extends State<Profile> {
       },
     ];
 
-    return Container(
-      height: 60,
+    return SizedBox(
+      height: 250,
       child: ListView.builder(
-        scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.vertical,
+        // physics: NeverScrollableScrollPhysics(),
         itemCount: menuItems.length,
         itemBuilder: (context, index) {
           final item = menuItems[index];
-          Color containerColor;
-
-          if (index == 0) {
-            containerColor = Color(0xffE62D05);
-          } else if (index == 1) {
-            containerColor = Color(0xffF6941C);
-          } else {
-            containerColor = Color(0xffE9EAEB);
-          }
-
           return GestureDetector(
             onTap: item['onTap'],
-            child: Container(
-              margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
-              height: 12,
-              width: 120,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: containerColor,
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        height: 16,
-                        width: 16,
-                        child: Image.asset(
-                          item['image'],
-                          color: item['Textcolor'],
-                        ),
-                      ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Container(
+                    height: 16,
+                    width: 16,
+                    child: Image.asset(
+                      item['image'],
+                      color: item['Textcolor'],
                     ),
-                    Text(
-                      item['title'],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: item['Textcolor'],
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                Text(
+                  item['title'],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: item['Textcolor'],
+                    fontWeight: FontWeight.w300,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ),
           );
         },
