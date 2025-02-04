@@ -9,7 +9,6 @@ import 'package:MetaBit/custom/lang_text.dart';
 import 'package:MetaBit/custom/toast_component.dart';
 import 'package:MetaBit/helpers/auth_helper.dart';
 import 'package:MetaBit/helpers/shared_value_helper.dart';
-import 'package:MetaBit/helpers/shimmer_helper.dart';
 import 'package:MetaBit/my_theme.dart';
 import 'package:MetaBit/presenter/home_presenter.dart';
 import 'package:MetaBit/presenter/unRead_notification_counter.dart';
@@ -28,7 +27,6 @@ import 'package:MetaBit/screens/product/todays_deal_products.dart';
 import 'package:MetaBit/screens/product/top_selling_products.dart';
 import 'package:MetaBit/screens/refund_request.dart';
 import 'package:MetaBit/screens/top_sellers.dart';
-import 'package:MetaBit/screens/wallet_main_screen.dart';
 import 'package:MetaBit/screens/wholesales_screen.dart';
 import 'package:MetaBit/screens/wishlist/widgets/page_animation.dart';
 import 'package:badges/badges.dart' as badges;
@@ -948,8 +946,7 @@ class _ProfileState extends State<Profile> {
                   child: buildSettingAndAddonsHorizontalMenuItem(
                       "assets/wallet.png",
                       AppLocalizations.of(context)!.my_wallet_ucf, () {
-                    Navigator.push(
-                        context, PageAnimation.fadeRoute(WalletMainScreen()));
+                    Navigator.push(context, PageAnimation.fadeRoute(Wallet()));
                   }),
                 ),
               ],
