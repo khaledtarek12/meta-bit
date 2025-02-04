@@ -64,7 +64,6 @@ class _MainState extends State<Main> {
       Home(),
       // CategoryProducts(slug: ''),
       SwapScreen(),
-
       Wallet(),
       Profile()
     ];

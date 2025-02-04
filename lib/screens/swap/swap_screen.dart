@@ -8,10 +8,9 @@ class SwapScreen extends StatefulWidget {
 }
 
 class _SwapScreenState extends State<SwapScreen> {
-  String fromCurrency = "ETH";
+  String fromCurrency = "USD";
   String toCurrency = "ETH";
 
-  // List of available currencies
   final List<Map<String, String>> currencies = [
     {"symbol": "USD", "description": "United States Dollar"},
     {"symbol": "EUR", "description": "Euro"},
@@ -21,8 +20,18 @@ class _SwapScreenState extends State<SwapScreen> {
     {"symbol": "GBP", "description": "British Pound"},
   ];
 
-  // Track the selected currency in the modal
   String selectedCurrency = "";
+
+  // Controllers for TextFields
+  final TextEditingController _fromAmountController = TextEditingController();
+  final TextEditingController _toAmountController = TextEditingController();
+
+  @override
+  void dispose() {
+    _fromAmountController.dispose();
+    _toAmountController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +44,8 @@ class _SwapScreenState extends State<SwapScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
+            children: const [
+              Text(
                 "Swap Token",
                 style: TextStyle(
                   color: Colors.black,
@@ -44,8 +53,8 @@ class _SwapScreenState extends State<SwapScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 10),
-              const Text(
+              SizedBox(height: 10),
+              Text(
                 "FANTOM OPERA",
                 style:
                     TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
@@ -64,10 +73,21 @@ class _SwapScreenState extends State<SwapScreen> {
                 children: [
                   const SizedBox(height: 20),
                   _buildTokenCard(
-                      context, "Enter Amount", fromCurrency, "12345", 'From'),
+                    context,
+                    "Enter Amount",
+                    fromCurrency,
+                    _fromAmountController,
+                    'From',
+                  ),
                   const SizedBox(height: 20),
                   _buildTokenCard(
-                      context, "Sell", toCurrency, "\$0", 'Receive'),
+                    context,
+                    "Converted Amount",
+                    toCurrency,
+                    _toAmountController,
+                    'Receive',
+                    readOnly: true,
+                  ),
                   const SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
@@ -80,7 +100,7 @@ class _SwapScreenState extends State<SwapScreen> {
                         ),
                       ),
                       onPressed: () {
-                        // Handle Swap logic
+                        _performSwap();
                       },
                       child: const Text(
                         "Swap now",
@@ -101,17 +121,20 @@ class _SwapScreenState extends State<SwapScreen> {
               right: 50,
               top: 180,
               child: Center(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.swap_vert,
-                    color: Colors.white,
-                    size: 50,
+                child: GestureDetector(
+                  onTap: _performSwap,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      color: Colors.blue,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.swap_vert,
+                      color: Colors.white,
+                      size: 50,
+                    ),
                   ),
                 ),
               ),
@@ -123,7 +146,8 @@ class _SwapScreenState extends State<SwapScreen> {
   }
 
   Widget _buildTokenCard(BuildContext context, String title, String token,
-      String value, String where) {
+      TextEditingController controller, String where,
+      {bool readOnly = false}) {
     return Container(
       height: 200,
       decoration: BoxDecoration(
@@ -161,37 +185,29 @@ class _SwapScreenState extends State<SwapScreen> {
                         color: Colors.grey,
                       ),
                     ),
-                    Row(
-                      children: [
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            shape: ContinuousRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      onPressed: () {
+                        _openCurrencySelector(
+                            context, where == 'From' ? 'from' : 'to');
+                      },
+                      child: Row(
+                        children: [
+                          const Icon(Icons.arrow_drop_down, size: 24),
+                          Text(
+                            token,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          onPressed: () {
-                            _openCurrencySelector(
-                              context,
-                              where == 'From'
-                                  ? 'from'
-                                  : 'to', // Correctly passing the target
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              const Icon(Icons.arrow_drop_down, size: 24),
-                              Text(
-                                token,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -207,8 +223,10 @@ class _SwapScreenState extends State<SwapScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: TextField(
+                controller: controller,
+                readOnly: readOnly,
                 decoration: InputDecoration(
-                  hintText: value,
+                  hintText: title,
                   hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -230,6 +248,87 @@ class _SwapScreenState extends State<SwapScreen> {
         ],
       ),
     );
+  }
+
+  void _performSwap() {
+    final double? amount = double.tryParse(_fromAmountController.text);
+
+    if (amount == null || fromCurrency == toCurrency) {
+      _toAmountController.text = "0";
+      return;
+    }
+
+    double rate = _getConversionRate(fromCurrency, toCurrency);
+
+    // Check if the rate is available
+    if (rate == 1.0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Conversion rate not available for $fromCurrency to $toCurrency.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      _toAmountController.text = "0";
+      return;
+    }
+
+    double result = amount * rate;
+
+    setState(() {
+      _toAmountController.text = result.toStringAsFixed(2);
+    });
+  }
+
+  double _getConversionRate(String from, String to) {
+    // Updated conversion rates including JPY
+    Map<String, Map<String, double>> rates = {
+      "ETH": {
+        "USD": 3000,
+        "BTC": 0.07,
+        "EUR": 2800,
+        "JPY": 450000,
+        "GBP": 2400
+      },
+      "BTC": {
+        "USD": 45000,
+        "ETH": 14,
+        "EUR": 42000,
+        "JPY": 6700000,
+        "GBP": 38000
+      },
+      "USD": {
+        "ETH": 0.00033,
+        "BTC": 0.000022,
+        "EUR": 0.93,
+        "JPY": 150,
+        "GBP": 0.76
+      },
+      "EUR": {
+        "USD": 1.08,
+        "ETH": 0.00036,
+        "BTC": 0.000024,
+        "JPY": 162,
+        "GBP": 0.82
+      },
+      "JPY": {
+        "USD": 0.0067,
+        "ETH": 0.0000022,
+        "BTC": 0.00000015,
+        "EUR": 0.0062,
+        "GBP": 0.005
+      },
+      "GBP": {
+        "USD": 1.32,
+        "ETH": 0.00042,
+        "BTC": 0.000026,
+        "EUR": 1.22,
+        "JPY": 200
+      },
+    };
+
+    // Return the conversion rate or 1.0 if not found
+    return rates[from]?[to] ?? 1.0;
   }
 
   void _openCurrencySelector(BuildContext context, String target) {
